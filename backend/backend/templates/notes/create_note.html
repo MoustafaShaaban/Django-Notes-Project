@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block hero %}
+{% block content %}
     <div class="bg-dark text-secondary px-4 py-5 text-center">
         <div class="py-5">
             <h1 class="display-5 fw-bold text-white">Add a new note</h1>
         </div>
     </div>
-{% endblock hero %}
-
-{% block page_content %}
     {% if user.is_authenticated %}
-    <form method="post" action="{% url 'blog:create-post' %}">
+    <form method="post" action="{% url 'notes:create-note' %}">
         {% csrf_token %}
         <div class="col-6">
             <div class="row text-white my-2">
@@ -27,4 +24,4 @@
     {% else %}
         <p>You are not logged in, Please click <a href="{% url 'login' %}" class="text-white">here</a> to login and add a todo!</p>
     {% endif %}
-{% endblock page_content %}
+{% endblock content %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 
 class Note(models.Model):
@@ -23,3 +24,6 @@ class Note(models.Model):
     def __str__(self):
         """Unicode representation of Note."""
         return f'Note Title: {self.title}, By: {self.user}'
+
+    def get_absolute_url(self):
+        return reverse('notes:note-list')
