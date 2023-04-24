@@ -1,6 +1,22 @@
 # Django-Notes-Project
 
-A project built with Django web framework and Graphene Django.
+A project built with Django web framework (Cookiecutter Django) and Graphene Django.
+
+###  Project Goals
+
+* Users can register for an account and sign in (handled by cookiecutter Django).
+
+* Authenticated users can:
+
+    * Run Create, Read, Update and Delete (CRUD) operations on notes and list all their added notes on the website.
+    
+    * Protect the notes so that only its owner can update or delete it.
+
+    * Throw a 403 forbidden page to any user who try to guess the URL to change something they are not authorized to do.
+
+    * Access a GraphQL endpoint and Run several Quries and Mutations including (CRUD) Mutations.
+ 
+
 
 ### To get started with this project
 
