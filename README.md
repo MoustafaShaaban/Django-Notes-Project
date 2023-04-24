@@ -8,7 +8,7 @@ A project built with Django web framework (Cookiecutter Django) and Graphene Dja
 
 * Authenticated users can:
 
-    * Run Create, Read, Update and Delete (CRUD) operations on notes and list all their added notes on the website.
+    * Perform Create, Read, Update and Delete (CRUD) operations on notes and list all their added notes on the website.
     
     * Protect the notes so that only its owner can update or delete it.
 
