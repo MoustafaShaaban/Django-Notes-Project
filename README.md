@@ -10,7 +10,7 @@ A project built with Django web framework (Cookiecutter Django) and Graphene Dja
 
     * Perform Create, Read, Update and Delete (CRUD) operations on notes and list all their added notes on the website.
     
-    * Protect the notes so that only its owner can update or delete it.
+    * Protect the notes so that only its owner can update or delete it (in the website and GraphQL endpoint).
 
     * Throw a 403 forbidden page to any user who try to guess the URL to change something they are not authorized to do.
 
