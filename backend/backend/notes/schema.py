@@ -5,6 +5,9 @@ from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql import GraphQLError
+import graphql_jwt
+import django_filters
+from graphql_jwt.decorators import login_required
 
 from backend.notes.models import Note
 
@@ -27,6 +30,17 @@ class NoteNode(DjangoObjectType):
             "user": ['exact']
         }
         interfaces = (graphene.relay.Node, )
+
+
+class NoteFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Note
+        fields = ['title', 'content']
+
+    @property
+    def qs(self):
+        return super(NoteFilter, self).qs.filter(user=self.request.user)
 
 
 
@@ -68,7 +82,7 @@ class UpdateNoteMutation(graphene.relay.ClientIDMutation):
             raise Exception('Invalid Link!')
         
         if note.user != info.context.user:
-            raise GraphQLError("only note owner can delete it")
+            raise GraphQLError("Only note owner can update it")
         else:
             note.title = input.get('title')
             note.content = input.get('content')
@@ -95,7 +109,22 @@ class DeleteNoteMutation(graphene.relay.ClientIDMutation):
 
 class Query(graphene.ObjectType):
     note = relay.Node.Field(NoteNode)
-    all_notes = DjangoFilterConnectionField(NoteNode)
+    all_notes = DjangoFilterConnectionField(NoteNode, filterset_class=NoteFilter)
+
+    me = graphene.Field(UserType)
+    users = graphene.List(UserType)
+
+    @login_required
+    def resolve_users(self, info):
+        return get_user_model().objects.all()
+
+    @login_required
+    def resolve_me(self, info):
+        user = info.context.user
+        if user.is_anonymous:
+            raise GraphQLError('Not logged in!')
+
+        return user
 
 
 
@@ -103,5 +132,9 @@ class Mutations(graphene.ObjectType):
     create_note = CreateNote.Field(description="Create a new note")
     update_note = UpdateNoteMutation.Field(description="Update a note by id")
     delete_note = DeleteNoteMutation.Field(description="Delete a note by id")
+
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutations)
