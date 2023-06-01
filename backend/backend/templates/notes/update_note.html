@@ -2,14 +2,14 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="bg-dark text-secondary px-4 py-5 text-center">
+    <div class="bg-light text-secondary px-4 py-5 text-center">
         <div class="py-5">
-            <h1 class="display-5 fw-bold text-white">Update note</h1>
+            <h1 class="display-5 fw-bold text-dark">Update {{ note.title }}</h1>
         </div>
     </div>
     <form method="post" action="{% url 'notes:update-note' note.pk %}">
         {% csrf_token %}
-        <div class="col text-white">
+        <div class="col-6 text-white">
             <div class="row text-white my-2">
                 {{ form.title|as_crispy_field }}
             </div>

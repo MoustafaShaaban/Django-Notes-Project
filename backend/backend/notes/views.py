@@ -4,7 +4,12 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from graphene_django.views import GraphQLView
 
+from rest_framework import viewsets
+from rest_framework import permissions
+
 from backend.notes.models import Note
+from backend.notes.permissions import IsOwnerOrReadOnly
+from backend.notes.serializers import NoteSerializer
 
 
 class PrivateGraphQLView(LoginRequiredMixin, GraphQLView):
@@ -55,3 +60,16 @@ class DeleteNote(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == note.user:
             return True
         return False
+
+
+class NoteViewSet(viewsets.ModelViewSet):
+    queryset = Note.objects.all()
+    serializer_class = NoteSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Note.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -3,14 +3,14 @@
 
 
 {% block content %}
-    <div class="bg-dark text-secondary px-4 py-5 text-center">
+    <div class="bg-light text-secondary px-4 py-5 text-center">
         <div class="py-5">
-            <h1 class="display-5 fw-bold text-white">Delete note</h1>
+            <h1 class="display-5 fw-bold text-dark">Delete {{ note.title }} </h1>
         </div>
     </div>
     <form method="post" action="{% url 'notes:delete-note' note.pk %}">
         {% csrf_token %}
-        <div class="col">
+        <div class="co-6l">
             <div class="row text-white">
                 {{ form.title|crispy }}
             </div>

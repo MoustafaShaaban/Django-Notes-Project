@@ -15,6 +15,8 @@ A project built with Django web framework (Cookiecutter Django) and Graphene Dja
     * Throw a 403 forbidden page to any user who try to guess the URL to change something they are not authorized to do.
 
     * Access a GraphQL endpoint and Run several Quries and Mutations including (CRUD) Mutations.
+
+    * Access a REST API endpoint and perform CRUD operations.
  
 
 
