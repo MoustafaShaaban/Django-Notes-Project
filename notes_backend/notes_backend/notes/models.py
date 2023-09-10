@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 
-
 class Note(models.Model):
     """Model definition for Note."""
 
@@ -14,7 +13,7 @@ class Note(models.Model):
     content = models.TextField(blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-        
+
     class Meta:
         """Meta definition for Note."""
 
@@ -26,4 +25,4 @@ class Note(models.Model):
         return f'Note Title: {self.title}, By: {self.user}'
 
     def get_absolute_url(self):
-        return reverse('notes:note-list')
+        return reverse('notes:note-detail', kwargs={'pk': self.pk})

@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
@@ -26,6 +26,11 @@ class ListNotes(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Note.objects.filter(user=self.request.user)
+
+
+class NoteDetail(LoginRequiredMixin, DetailView):
+    model = Note
+    context_object_name = 'note'
 
 
 class CreateNote(LoginRequiredMixin, CreateView):
