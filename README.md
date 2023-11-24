@@ -34,6 +34,8 @@ A project built with Django web framework (Cookiecutter Django) and Graphene Dja
 
 * Create the database by running the following commands:
 
+` docker-compose -f local.yml run --rm django python manage.py makemigrations `
+
 ` docker-compose -f local.yml run --rm django python manage.py migrate `
 
 * Create a super user:
@@ -45,3 +47,10 @@ A project built with Django web framework (Cookiecutter Django) and Graphene Dja
 ``` docker-compose -f local.yml up ```
 
 * Open the web browser and go to ` http://localhost:8000/ ` to see the results.
+
+
+# References:
+
+* [Django Session-based Auth for Single Page Apps](https://testdriven.io/blog/django-spa-auth/)
+
+* [Use React and Spring Boot to Build a Simple CRUD App](https://developer.okta.com/blog/2022/06/17/simple-crud-react-and-spring-boot)

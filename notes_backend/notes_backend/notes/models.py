@@ -8,15 +8,18 @@ class Note(models.Model):
     title = models.CharField(max_length=250)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True
     )
     content = models.TextField(blank=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateField(auto_now_add=True)
 
     class Meta:
         """Meta definition for Note."""
-
+        ordering = ['-created_on']
+        indexes = [
+            models.Index(fields=['-created_on', 'user'])
+        ]
         verbose_name = 'Note'
         verbose_name_plural = 'Notes'
 
