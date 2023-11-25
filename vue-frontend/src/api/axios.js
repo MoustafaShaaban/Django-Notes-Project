@@ -55,9 +55,10 @@ export const updateNote = async (id) => {
 
 export const deleteNote = async (id) => {
     const store = useNotesStore();
-    return await notesAPI.delete("/notes/" + id, {
+    await notesAPI.delete("/notes/" + id, {
         headers: {
             "X-CSRFToken": store.$state.csrfToken
         }
     })
+    await router.push("/notes")
 }
