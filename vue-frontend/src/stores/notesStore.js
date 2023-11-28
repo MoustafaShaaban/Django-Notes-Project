@@ -39,7 +39,6 @@ export const useNotesStore = defineStore('notes', {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
                     if (data.isAuthenticated) {
                         this.isAuthenticated = true
                     } else {
@@ -84,7 +83,6 @@ export const useNotesStore = defineStore('notes', {
             });
             const user = await res.json();
             this.username = user.username;
-            console.log(user)
         },
 
         async logout() {

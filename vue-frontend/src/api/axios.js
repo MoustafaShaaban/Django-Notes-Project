@@ -4,9 +4,6 @@ import { useNotesStore } from "../stores/notesStore";
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
-
-
-
 export const notesAPI = axios.create({
     baseURL: "http://localhost:8000/api",
     withCredentials: true,
@@ -19,7 +16,7 @@ export const notesAPI = axios.create({
 
 
 export const getNote = async (id) => {
-    const response = await notesAPI.get("/notes/" + id)
+    const response = await notesAPI.get(`/notes/${id}/`)
     return response.data
 }
 
@@ -37,10 +34,10 @@ export const addNote = async (note) => {
     })
 }
 
-export const updateNote = async (id) => {
+export const updateNote = async (note) => {
     try {
         const store = useNotesStore();
-        await notesAPI.put("/notes/" + id, {
+        await notesAPI.put(`/notes/${note.id}/` + note, {
             headers: {
                 "X-CSRFToken": store.$state.csrfToken
             }
@@ -56,9 +53,9 @@ export const updateNote = async (id) => {
 export const deleteNote = async (id) => {
     const store = useNotesStore();
     await notesAPI.delete("/notes/" + id, {
+        method: "DELETE",
         headers: {
             "X-CSRFToken": store.$state.csrfToken
         }
     })
-    await router.push("/notes")
 }

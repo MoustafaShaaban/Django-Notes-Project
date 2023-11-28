@@ -9,14 +9,8 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ note.content }}.</p>
-                    <router-link :to="{ name: 'editNote', params: { id: note.id } }"
-                        class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
-                        Edit
-                    </router-link>
-                    <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        Delete
-                    </button>
+                    <router-link :to="{ name: 'note', params: { id: note.id } }"
+                        class="btn btn-primary">Detail</router-link>
                 </div>
                 <div class="card-footer text-body-secondary">
                     {{ note.created_on }}
@@ -68,7 +62,16 @@ const { isPending, isFetching, isError, data: notes, error } = useQuery({
     queryFn: getNotes
 })
 
-async function handleSubmit(id) {
-    await deleteNote(id)
+const deleteNoteMutation = useMutation({
+    mutationFn: deleteNote,
+    onSuccess: () => {
+        queryClient.invalidateQueries({
+            queryKey: ["notes"]
+        })
+    }
+})
+
+const handleSubmit = (id) => {
+    deleteNoteMutation.mutate(id)   
 }
 </script>

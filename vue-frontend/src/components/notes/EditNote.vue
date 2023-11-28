@@ -27,6 +27,7 @@
 <script>
 import axios from 'axios';
 import { useNotesStore } from "../../stores/notesStore";
+import { notesAPI } from '../../api/axios';
 
 export default {
     name: "EditNote",
@@ -44,9 +45,8 @@ export default {
     },
     async mounted() {
         await this.notesStore.getCSRFToken()
-        await axios.get("http://localhost:8000/api/notes/" + this.$route.params.id, {
+        await notesAPI.get("/notes/" + this.$route.params.id, {
             withCredentials: true,
-            withXSRFToken: true
         })
             .then(response => {
                 this.note = response.data
@@ -55,7 +55,7 @@ export default {
     methods: {
         updateNote(e) {
 
-            axios.put(`http://localhost:8000/api/notes/${this.note.id}/`, this.note, {
+            notesAPI.put(`/notes/${this.note.id}/`, this.note, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': "application/json",
