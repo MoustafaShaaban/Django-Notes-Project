@@ -1,36 +1,149 @@
 <script>
+import { ref } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
-import Header from './components/Header.vue';
-import NoteList from './components/notes/NoteList.vue';
-// import NoteList from './components/query/NoteList.vue';
-// import AddNote from './components/query/AddNote.vue';
-import { useAuthStore } from './stores/auth/auth';
-import { useNotesStore } from './stores/notesStore';
+import { Notify } from 'quasar';
+
+import { useAuthStore } from './stores/authStore';
 
 export default {
   name: "App",
-  components: {
-    Header,
-    NoteList,
-    // AddNote
-  },
   setup() {
-    const notesStore = useNotesStore();
-    return { notesStore };
+    const authStore = useAuthStore();
+    const leftDrawerOpen = ref(false)
+    return {
+      authStore,
+      tab: ref('images'),
+      leftDrawerOpen,
+      toggleLeftDrawer () {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      }
+    };
   },
-  async mounted() {
-    await this.notesStore.getSession();
-    if (!this.notesStore.$state.csrfToken) {
-      await this.notesStore.getCSRFToken();
-    }
+  async created() {
+    await this.authStore.getSession();
+  },
+  methods: {
+    async logout() {
+      try {
+        await this.authStore.logout()
+        this.$router.push('/login')
+        Notify.create({
+          message: 'Logged out Successfully',
+          color: "positive",
+          actions: [
+            { icon: 'close', color: 'white', round: true, }
+          ]
+        })
+      } catch (error) {
+        Notify.create({
+          message: error.message,
+          color: "negative",
+          actions: [
+            { icon: 'close', color: 'white', round: true, }
+          ]
+        })
+      }
+    },
   }
 }
 </script>
 
-<template>
+<!-- <template>
     <Header></Header>
     <div>
       <RouterView />
     </div>
 
+</template> -->
+
+<template>
+  <q-layout view="hHh lpR fFf">
+    <q-header  reveal elevated class="bg-primary text-white">
+      <q-toolbar>
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+
+        <q-toolbar-title>Notes App</q-toolbar-title>
+        <q-tabs v-model="tab" v-if="!authStore.$state.isAuthenticated">
+          <router-link to="/login" name="Login" label="Login">Login</router-link>
+          <q-tab name="Register" label="Register" />
+        </q-tabs>
+
+        <q-tabs v-model="tab" v-if="authStore.$state.isAuthenticated">
+          <div class="q-pa-md">
+            <q-btn-dropdown color="primary" label="Manage Account">
+              <q-list>
+                <q-item clickable>
+                  <q-item-section>
+                    <RouterLink to="/add-note" class="dropdown-item">
+                      Add Note
+                    </RouterLink>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable @click="logout">
+                  <q-item-section>
+                    <q-item-label>Logout</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
+        </q-tabs>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer v-model="leftDrawerOpen" side="left" bordered>
+      <q-scroll-area class="fit">
+        <q-list v-if="authStore.$state.isAuthenticated" padding class="menu-list q-mt-lg">
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="inbox" />
+            </q-item-section>
+
+            <router-link to="/notes">
+              Notes
+            </router-link>
+          </q-item>
+
+          <q-item active clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="star" />
+            </q-item-section>
+
+            <router-link to="/add-note">
+              Add Note
+            </router-link>
+          </q-item>
+        </q-list>
+        <q-list v-else padding class="menu-list q-mt-lg">
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="inbox" />
+            </q-item-section>
+
+            <router-link to="/about">
+              About
+            </router-link>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+
+    <q-page-container>
+      <RouterView :key="$route.path" />
+    </q-page-container>
+
+    <q-footer reveal elevated class="bg-grey-8 text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <div>Title</div>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
+  </q-layout>
 </template>
+
+<style lang="sass" scoped>
+.menu-list .q-item
+  border-radius: 0 32px 32px 0
+</style>

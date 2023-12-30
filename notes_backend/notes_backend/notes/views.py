@@ -55,8 +55,10 @@ class UpdateNote(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Note
     fields = ['title', 'content']
     template_name = 'notes/update_note.html'
-    success_url = reverse_lazy('notes:note-list')
+    #success_url = reverse_lazy('notes:note-list')
 
+    def get_success_url(self):
+        return reverse_lazy("notes:note-detail", kwargs={"pk": self.object.pk})
 
     def test_func(self):
         note = self.get_object()

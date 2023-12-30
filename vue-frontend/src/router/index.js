@@ -1,13 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, useRouter } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotFound from '../views/NotFound.vue'
 import LoginPage from '../components/auth/LoginPage.vue'
 import RegisterPage from '../components/auth/RegisterPage.vue'
-import AddNote from '../components/notes/AddNote.vue'
-import AddNoteVue from '../components/query/AddNote.vue'
-import NoteListVue from '../components/query/NoteList.vue'
+import AddNote from '../components/AddNote.vue'
+import NoteListVue from '../components/NoteList.vue'
 
-import { useNotesStore } from '../stores/notesStore';
+import { useAuthStore } from "../stores/authStore"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +16,7 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: {
-        protected: false
+        requireAuth: false
       }
     },
     {
@@ -25,7 +24,7 @@ const router = createRouter({
       name: 'login',
       component: LoginPage,
       meta: {
-        protected: false
+        requireAuth: false
       }
     },
     {
@@ -33,7 +32,7 @@ const router = createRouter({
       name: 'register',
       component: RegisterPage,
       meta: {
-        protected: false
+        requireAuth: false
       }
     },
     {
@@ -41,31 +40,23 @@ const router = createRouter({
       name: 'notes',
       component: NoteListVue,
       meta: {
-        protected: true
+        requireAuth: true
       }
     },
     {
       path: '/add-note',
       name: 'addNote',
-      component: AddNoteVue,
+      component: AddNote,
       meta: {
-        protected: true
+        requireAuth: true
       }
     },
     {
       path: "/edit-note/:id",
       name: "editNote",
-      component: () => import("../components/notes/EditNote.vue"),
+      component: () => import("../components/EditNote.vue"),
       meta: {
-        protected: true
-      }
-    },
-    {
-      path: "/note/:id",
-      name: "note",
-      component: () => import("../components/notes/Note.vue"),
-      meta: {
-        protected: true
+        requireAuth: true
       }
     },
     {
@@ -74,20 +65,41 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
+      meta: {
+        requireAuth: false
+      }
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: NotFound
+      component: NotFound,
+      meta: {
+        requireAuth: true
+      }
     }
   ]
 })
 
+
+// Check is the user is authenticated:
+// let authenticated = localStorage.getItem('Authenticated')
+
 router.beforeEach((to, from, next) => {
-  const notesStore = useNotesStore();
-  if (to.meta.protected && !notesStore.$state.isAuthenticated) next({ name: 'login' })
-  else next()
-});
+  const authStore = useAuthStore()
+  let authenticated = authStore.$state.isAuthenticated
+  const router = useRouter()
+  
+  if (to.meta.requireAuth && !authenticated) {
+    next({ name: 'login'})
+  } else if (to.name == "login" && authenticated) {
+    next({ name: 'home'})
+  } else if (to.name == "register" && authenticated) {
+    next({ name: 'home'})
+  } else {
+    next()
+  }
+})
+
 
 export default router

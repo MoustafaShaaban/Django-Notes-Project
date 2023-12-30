@@ -18,8 +18,8 @@
         <p class="my-5 text-center">Are you sure you want to delete this note?</p>
         <hr>
         <div class="form-inline my-lg-0">
-            <button class="btn btn-info mx-2 my-3">
-                <a class="text-white" href="{% url 'notes:note-list' %}">Go back</a>
+            <button class="btn btn-primary mx-2">
+                <a class="text-white" href="{% url 'notes:note-detail' note.pk %}">Cancel</a>
             </button>
             <button class="btn btn-danger" type="submit">Delete</button>
         </div>

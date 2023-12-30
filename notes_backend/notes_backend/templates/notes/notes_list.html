@@ -2,34 +2,34 @@
 {% block content %}
   <h2 class="display-6 mt-5 lh-1 fw-bold text-center">Your notes</h2>
   <div class="container px-4 py-5" id="custom-cards">
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+    <div class="row row-cols-1 row-cols-lg-1 align-items-stretch g-4 py-5">
       {% for note in notes %}
-    <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-            <h3 class="pt-1 mt-1 mb-4 display-6 lh-1 fw-bold">{{ note.title }}</h3>
-            <p class="pt-1 mt-1 mb-4">{{ note.content|slice:':50' }}</p>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <button class="btn btn-primary mx-2 my-3" type="submit">
-                  <a class="text-white" href="{% url 'notes:note-detail' note.pk %}">Details</a>
-                </button>
-              </li>
-              <li class="d-flex align-items-center">
-                <small>{{ note.created_on }}</small>
-              </li>
-            </ul>
+        <div class="col mx-auto" style="max-width: 400px;">
+            <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg">
+              <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+                <h3 class="pt-1 mt-1 mb-4 display-6 lh-1 fw-bold">{{ note.title }}</h3>
+                <p class="pt-1 mt-1 mb-4">{{ note.content|slice:':50' }}</p>
+                <ul class="d-flex list-unstyled mt-auto">
+                  <li class="me-auto">
+                    <button class="btn btn-primary mx-2 my-3" type="submit">
+                      <a class="text-white" href="{% url 'notes:note-detail' note.pk %}">Details</a>
+                    </button>
+                  </li>
+                  <li class="d-flex align-items-center">
+                    <small>{{ note.created_on }}</small>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-    <hr class="text-light col-3 mx-auto" />
-  {% empty %}
-    <p>
-      You didn't add any notes yet click
-      <a href="{% url 'notes:create-note' %}">here</a> to add a new note
-    </p>
-  {% endfor %}
+        <hr class="text-light col-3 mx-auto" />
+      {% empty %}
+        <p>
+          You didn't add any notes yet click
+          <a href="{% url 'notes:create-note' %}">here</a> to add a new note
+        </p>
+      {% endfor %}
     </div>
   </div>
 

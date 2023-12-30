@@ -1,50 +1,79 @@
 <template>
-    <div class="container">
-        <div v-if="!this.notesStore.isAuthenticated" class="row align-items-center g-lg-5 py-5">
-            <div class="col-lg-7 text-center text-lg-start mx-auto">
-                <h1 class="p-4 display-4 fw-bold lh-1 mb-3">Sign in to your account</h1>
+    <q-page class="flex flex-center">
+      <q-card v-if="!this.authStore.isAuthenticated" flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+        <q-card-section>
+          <div class="row items-center no-wrap">
+            <div class="col">
+              <div class="text-h6">Sign to your account</div>
             </div>
-            <div class="col-md-10 mx-auto col-lg-5">
-                <form @submit.prevent="login" class="p-4 p-md-5 border rounded-3"
-                    data-bitwarden-watching="1">
-                    <div class="form-floating mb-3">
-                        <input type="text" v-model="username" required class="form-control" id="floatingInput"
-                            placeholder="name@example.com">
-                        <label for="floatingInput">Username</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="password" v-model="password" required class="form-control" id="floatingPassword"
-                            placeholder="Password">
-                        <label for="floatingPassword">Password</label>
-                    </div>
-                    <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</template>
+          </div>
+        </q-card-section>
+  
+        <q-card-section>
+          <q-form @submit.prevent="login" @reset="onReset">
+              <q-input filled v-model.lazy.trim="username" label="Username" required lazy-rules
+                :rules="[val => val && val.length > 0 || 'Username is required']" />
+  
+              <q-input filled v-model.lazy.trim="password" type="password" required label="Password" lazy-rules
+                :rules="[val => val && val.length > 0 || 'Password is required']" />
+                <q-separator />
+              <div class="q-pa-sm q-mt-md">
+                <q-btn label="Login" type="submit" color="primary" />
+                <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
+              </div>
+            </q-form>
+        </q-card-section>
+      </q-card>
+    </q-page>
+  </template>
+  
+  <script>
+  import { useQuasar, Notify, Cookies } from 'quasar'
+  import { useRouter } from 'vue-router';
 
-<script>
-import { useNotesStore } from '../../stores/notesStore';
-
-export default {
-    name: "LoginPage",
-    setup() {
-    const notesStore = useNotesStore();
-    return { notesStore };
-  },
-    data() {
-        return {
-            username: '',
-            password: '',
-        }
-    },
-    methods: {
+  import { useAuthStore } from '../../stores/authStore';
+  
+  export default {
+      name: "LoginPage",
+      setup() {
+          const authStore = useAuthStore();
+          const router = useRouter()
+          return { authStore, router };
+      },
+      data() {
+          return {
+              username: '',
+              password: '',
+          }
+      },
+      methods: {
         async login() {
-            await this.notesStore.login(this.username, this.password)
-            this.$router.push('/')
-        }
-    },
-
-}
-</script>
+          try {
+            await this.authStore.login(this.username, this.password)
+              this.router.push('/')
+              Notify.create({
+                message: 'Logged in Successfully',
+                color: "positive",
+                actions: [
+                  { icon: 'close', color: 'white', round: true, }
+                ]
+              })
+          } catch (error) {
+            Notify.create({
+              message: error.message,
+              color: "negative",
+              actions: [
+                { icon: 'close', color: 'white', round: true, }
+              ]
+            })
+          }
+        },
+          onReset () {
+              this.username = null
+              this.password = null
+          }
+      },
+  
+  }
+  </script>
+  

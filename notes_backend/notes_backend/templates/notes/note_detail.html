@@ -12,6 +12,9 @@
               <a href="{% url 'notes:update-note' note.pk %}" type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Update</a>
               <a href="{% url 'notes:delete-note' note.pk %}" type="button" class="btn btn-outline-danger btn-lg px-4">Delete</a>
             </div>
+            <br>
+            <hr>
+            <a href="{% url 'notes:note-list' %}" type="button" class="btn btn-outline-primary btn-lg px-4">Back to Notes</a>
             {% endif %}
           </div>
         </div>

@@ -13,13 +13,13 @@
                         <RouterLink to="/" class="nav-link px-2 text-white">Home</RouterLink>
                     </li>
                 </ul>
-
-                <div class="text-end" v-if="!this.notesStore.isAuthenticated">
+h
+                <div class="text-end" v-if="!store.$state.isAuthenticated">
                     <RouterLink to="/login" type="button" class="btn btn-outline-light me-2">Login</RouterLink>
                     <RouterLink to="/register" type="button" class="btn btn-warning">Register</RouterLink>
                 </div>
 
-                <div class="text-end" v-if="this.notesStore.isAuthenticated">
+                <div class="text-end" v-if="store.$state.isAuthenticated">
                     <div class="dropdown text-end">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,27 +44,27 @@
 <script>
 import { mapState } from 'pinia';
 import { RouterLink } from 'vue-router'
-import { useNotesStore } from '../stores/notesStore';
+import { useAuthStore } from '../stores/authStore';
 export default {
     name: "Header",
     setup() {
-        const notesStore = useNotesStore();
-        const username = notesStore.username
-        return { notesStore, username };
+        const authStore = useAuthStore();
+        const username = authStore.username
+        return { authStore, username };
     },
     computed: {
-        ...mapState(useNotesStore, {
+        ...mapState(useAuthStore, {
             user: "username"
         })
     },
     methods: {
         async logout() {
-            await this.notesStore.logout()
+            await this.authStore.logout()
             this.$router.push('/login')
         },
 
         async getUser() {
-            await this.notesStore.fetchUser()
+            await this.authStore.fetchUser()
         }
     }
 

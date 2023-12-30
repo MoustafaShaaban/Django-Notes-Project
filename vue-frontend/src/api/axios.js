@@ -1,47 +1,30 @@
 import axios from "axios";
-import { useNotesStore } from "../stores/notesStore";
+import { Cookies } from "quasar";
 
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-axios.defaults.xsrfCookieName = "csrftoken";
 
-export const notesAPI = axios.create({
-    baseURL: "http://localhost:8000/api",
+export const axiosAPI = axios.create({
+    baseURL: import.meta.env.VITE_REST_API_URL,
     withCredentials: true,
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },
     timeout: 4000,
 });
 
 
-export const getNote = async (id) => {
-    const response = await notesAPI.get(`/notes/${id}/`)
-    return response.data
-}
-
 export const getNotes = async () => {
-    const response = await notesAPI.get("/notes/")
+    const response = await axiosAPI.get("/notes/")
     return response.data
 }
 
 export const addNote = async (note) => {
-    const store = useNotesStore();
-    return await notesAPI.post("/notes/", note, {
+    return await axiosAPI.post("/notes/", note, {
         headers: {
-            "X-CSRFToken": store.$state.csrfToken
+          'X-CSRFToken': Cookies.get('csrftoken')
         }
-    })
+      })
 }
 
-export const updateNote = async (note) => {
+export const updateNote = async (updatedNote) => {
     try {
-        const store = useNotesStore();
-        await notesAPI.put(`/notes/${note.id}/` + note, {
-            headers: {
-                "X-CSRFToken": store.$state.csrfToken
-            }
-        })
+        await axiosAPI.put(`/notes/${updatedNote.id}/` + updatedNote)
         await router.push("/notes")
     } catch (error) {
         if (error.response.errors) {
@@ -51,11 +34,9 @@ export const updateNote = async (note) => {
 }
 
 export const deleteNote = async (id) => {
-    const store = useNotesStore();
-    await notesAPI.delete("/notes/" + id, {
-        method: "DELETE",
+    await axiosAPI.delete("/notes/" + id, {
         headers: {
-            "X-CSRFToken": store.$state.csrfToken
+          'X-CSRFToken': Cookies.get('csrftoken')
         }
-    })
+      })
 }
