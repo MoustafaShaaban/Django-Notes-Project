@@ -80,6 +80,14 @@ export default {
                   </q-item-section>
                 </q-item>
 
+                <q-item clickable>
+                  <q-item-section>
+                    <RouterLink to="/notes/graphql" class="dropdown-item">
+                      GraphQL Note List
+                    </RouterLink>
+                  </q-item-section>
+                </q-item>
+
                 <q-item clickable @click="logout">
                   <q-item-section>
                     <q-item-label>Logout</q-item-label>

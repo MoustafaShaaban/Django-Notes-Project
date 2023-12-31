@@ -9,10 +9,10 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from graphene_django.views import GraphQLView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
 from django.views.decorators.cache import cache_page
-from graphene_django.views import GraphQLView
 
 from rest_framework import viewsets, generics
 from rest_framework import permissions

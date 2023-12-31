@@ -60,6 +60,14 @@ const router = createRouter({
       }
     },
     {
+      path: "/notes/graphql",
+      name: "graphqlnoteslist",
+      component: () => import("../components/graphql/NoteList.vue"),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

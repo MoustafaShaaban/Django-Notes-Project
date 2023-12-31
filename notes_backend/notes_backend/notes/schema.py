@@ -9,8 +9,11 @@ import graphql_jwt
 import django_filters
 from graphql_jwt.decorators import login_required
 
-from notes_backend.notes.models import Note
+from .models import Note
+from .queries import Query
+from .mutations import CreateNoteMutation, UpdateNoteMutation, DeleteNoteMutation
 
+"""
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -37,7 +40,6 @@ class NoteFilter(django_filters.FilterSet):
     @property
     def qs(self):
         return super(NoteFilter, self).qs.filter(user=self.request.user)
-
 
 class CreateNote(graphene.relay.ClientIDMutation):
     note = graphene.Field(NoteNode)
@@ -120,9 +122,11 @@ class Query(graphene.ObjectType):
 
         return user
 
+"""
+
 
 class Mutations(graphene.ObjectType):
-    create_note = CreateNote.Field(description="Create a new note")
+    create_note = CreateNoteMutation.Field(description="Create a new note")
     update_note = UpdateNoteMutation.Field(description="Update a note by id")
     delete_note = DeleteNoteMutation.Field(description="Delete a note by id")
 
