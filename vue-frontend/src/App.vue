@@ -14,7 +14,7 @@ export default {
       authStore,
       tab: ref('images'),
       leftDrawerOpen,
-      toggleLeftDrawer () {
+      toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     };
@@ -58,11 +58,13 @@ export default {
 
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header  reveal elevated class="bg-primary text-white">
+    <q-header reveal elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title>Notes App</q-toolbar-title>
+        <q-toolbar-title>
+          Notes App
+        </q-toolbar-title>
         <q-tabs v-model="tab" v-if="!authStore.$state.isAuthenticated">
           <router-link to="/login" name="Login" label="Login">Login</router-link>
           <q-tab name="Register" label="Register" />
@@ -88,6 +90,14 @@ export default {
                   </q-item-section>
                 </q-item>
 
+                <q-item clickable>
+                  <q-item-section>
+                    <RouterLink to="/add-note/graphql" class="dropdown-item">
+                      GraphQL Add Note
+                    </RouterLink>
+                  </q-item-section>
+                </q-item>
+
                 <q-item clickable @click="logout">
                   <q-item-section>
                     <q-item-label>Logout</q-item-label>
@@ -109,7 +119,17 @@ export default {
             </q-item-section>
 
             <router-link to="/notes">
-              Notes
+              REST API Notes List
+            </router-link>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="inbox" />
+            </q-item-section>
+
+            <router-link to="/notes/graphql">
+              GraphQL Notes List
             </router-link>
           </q-item>
 
@@ -119,7 +139,17 @@ export default {
             </q-item-section>
 
             <router-link to="/add-note">
-              Add Note
+              Add Note REST API
+            </router-link>
+          </q-item>
+
+          <q-item active clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="star" />
+            </q-item-section>
+
+            <router-link to="/add-note/graphql">
+              Add Note GraphQL
             </router-link>
           </q-item>
         </q-list>

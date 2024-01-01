@@ -13,7 +13,7 @@
                         <RouterLink to="/" class="nav-link px-2 text-white">Home</RouterLink>
                     </li>
                 </ul>
-h
+                h
                 <div class="text-end" v-if="!store.$state.isAuthenticated">
                     <RouterLink to="/login" type="button" class="btn btn-outline-light me-2">Login</RouterLink>
                     <RouterLink to="/register" type="button" class="btn btn-warning">Register</RouterLink>
@@ -26,7 +26,9 @@ h
                             <span class="text-white">Hello, {{ user }}</span>
                         </a>
                         <ul class="dropdown-menu text-small" style="">
-                            <li><RouterLink to="/add-note" class="dropdown-item" href="#">Add Note</RouterLink></li>
+                            <li>
+                                <RouterLink to="/add-note" class="dropdown-item" href="#">Add Note</RouterLink>
+                            </li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li>

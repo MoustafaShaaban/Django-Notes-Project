@@ -35,6 +35,7 @@ const apolloProvider = createApolloProvider({
 app.use(createPinia())
 app.use(router)
 app.use(Quasar, {
+    boot: ["apollo.js"],
     plugins: {
         Notify,
         Dialog,

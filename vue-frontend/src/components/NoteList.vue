@@ -44,7 +44,7 @@
 
           <q-card-actions>
             <router-link :to="{ name: 'editNote', params: { id: note.id } }">
-            <q-btn color="info" flat>
+              <q-btn color="info" flat>
                 Edit
               </q-btn>
             </router-link>
@@ -109,7 +109,7 @@ const queryClient = useQueryClient();
 const { isPending, isFetching, isError, data: notes, error } = useQuery({
   queryKey: ['notes'],
   queryFn: getNotes,
-  onError: async(error) => {
+  onError: async (error) => {
     $q.notify({
       message: error.message,
       color: "negative",

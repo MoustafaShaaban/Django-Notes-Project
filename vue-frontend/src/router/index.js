@@ -4,6 +4,7 @@ import NotFound from '../views/NotFound.vue'
 import LoginPage from '../components/auth/LoginPage.vue'
 import RegisterPage from '../components/auth/RegisterPage.vue'
 import AddNote from '../components/AddNote.vue'
+import GraphQLAddNote from '../components/graphql/AddNote.vue'
 import NoteListVue from '../components/NoteList.vue'
 
 import { useAuthStore } from "../stores/authStore"
@@ -63,6 +64,15 @@ const router = createRouter({
       path: "/notes/graphql",
       name: "graphqlnoteslist",
       component: () => import("../components/graphql/NoteList.vue"),
+      meta: {
+        requireAuth: true
+      },
+      
+    },
+    {
+      path: '/add-note/graphql',
+      name: 'GraphQLAddNote',
+      component: GraphQLAddNote,
       meta: {
         requireAuth: true
       }
