@@ -26,11 +26,11 @@
           <q-separator />
 
           <q-card-actions>
-            <!-- <router-link :to="{ name: 'editNote', params: { id: note.id } }">
+            <router-link :to="{ name: 'graphqlEditNote', params: { id: note.id } }">
               <q-btn color="info" flat>
                 Edit
               </q-btn>
-            </router-link> -->
+            </router-link>
             <q-btn color="info" flat @click="confirm(note.id)">Delete</q-btn>
           </q-card-actions>
         </q-card>
@@ -73,6 +73,7 @@ import { useRouter } from 'vue-router';
 import { Notify, Dialog } from 'quasar';
 import gql from 'graphql-tag'
 import { addNoteMutation, deleteNoteMutation } from '../../mutations';
+import { getAllNotes } from '../../queries';
 
 export default {
   name: "GraphQLNoteList",
@@ -80,20 +81,11 @@ export default {
     const router = useRouter()
     return { router }
   },
-  apollo: {
-    allNotes: gql`
-            query getNotes {
-                allNotes {
-                    id
-                    title
-                    content
-                    createdOn
-                    user {
-                        username
-                    }
-                }
-            }
-        `
+  mounted() {
+    this.getNotes();
+  },
+  updated() {
+    this.getNotes();
   },
   data() {
     return {
@@ -108,6 +100,14 @@ export default {
       window.location.reload();
     },
 
+    async getNotes() {
+      let data = await this.$apollo.query({
+        query: getAllNotes,
+      })
+
+      this.allNotes = data.data.allNotes
+    },
+
     async handleSubmit() {
       await this.$apollo.mutate({
         mutation: addNoteMutation,
@@ -118,7 +118,6 @@ export default {
       })
       this.card = false
       await this.$router.push("/notes/graphql")
-      this.refreshPage()
       Notify.create({
         message: 'Note Added Successfully',
         color: "positive",
@@ -161,9 +160,20 @@ export default {
         variables: {
           // https://stackoverflow.com/questions/73172384/variable-id-got-invalid-value-1-int-cannot-represent-non-integer-value-1
           id: parseInt(id),
+        },
+        update: (store, { data: { handleSubmit } }) => {
+          // Add to all notes list
+          let data = store.readQuery({ query: getAllNotes })
+          data = {
+            ...data,
+            notes: [
+              ...data.notes,
+              handleSubmit
+            ],
+          }
+          store.writeQuery({ query: getAllNotes, data })
         }
       })
-      this.refreshPage()
     }
   }
 }

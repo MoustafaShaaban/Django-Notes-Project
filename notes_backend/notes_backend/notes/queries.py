@@ -8,7 +8,8 @@ from .types import NoteType, NoteNode
 
 class Query(graphene.ObjectType):
     all_notes = graphene.List(NoteType)
-    note_by_title = graphene.List(NoteType)
+    note_by_title = graphene.List(NoteType, title=graphene.String(required=True))
+    note_by_id = graphene.Field(NoteType, id=graphene.Int(required=True))
     all_notes_with_filters = DjangoFilterConnectionField(NoteNode)
 
     @classmethod
@@ -24,3 +25,9 @@ class Query(graphene.ObjectType):
             return Note.objects.filter(title__contains=title)
         except Note.DoesNotExist:
             return GraphQLError('No note found with the provided title')
+            
+    def resolve_note_by_id(cls, root, id):
+        try:
+            return Note.objects.get(pk=id)
+        except Note.DoesNotExist:
+            return GraphQLError('No note found with the provided id')

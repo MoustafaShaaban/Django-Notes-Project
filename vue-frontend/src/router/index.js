@@ -78,6 +78,14 @@ const router = createRouter({
       }
     },
     {
+      path: "/edit-note/graphql/:id",
+      name: "graphqlEditNote",
+      component: () => import("../components/graphql/EditNote.vue"),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

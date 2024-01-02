@@ -34,6 +34,7 @@
 <script>
 import { Notify } from "quasar"
 import { addNoteMutation } from "../../mutations"
+import { getAllNotes } from "../../queries"
 
 export default {
     name: "GraphQLAddNote",
@@ -50,6 +51,18 @@ export default {
                 variables: {
                     "title": this.title,
                     "content": this.content
+                },
+                update: (store, { data: { handleSubmit } }) => {
+                    // Add to all notes list
+                    let data = store.readQuery({ query: getAllNotes })
+                    data = {
+                        ...data,
+                        notes: [
+                            ...data.notes,
+                            handleSubmit
+                        ],
+                    }
+                    store.writeQuery({ query: getAllNotes, data })
                 }
             })
             this.$router.push("/notes/graphql")

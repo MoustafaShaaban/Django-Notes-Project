@@ -14,3 +14,13 @@ export const getAllNotes = gql`
         }
     }
 `
+
+export const noteById = gql`
+    query noteById($id: Int!) {
+        noteById(id: $id) {
+            id
+            title
+            content
+        }
+    }
+`
