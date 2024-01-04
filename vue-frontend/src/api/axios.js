@@ -17,9 +17,9 @@ export const getNotes = async () => {
 export const addNote = async (note) => {
     return await axiosAPI.post("/notes/", note, {
         headers: {
-          'X-CSRFToken': Cookies.get('csrftoken')
+            'X-CSRFToken': Cookies.get('csrftoken')
         }
-      })
+    })
 }
 
 export const updateNote = async (updatedNote) => {
@@ -36,7 +36,7 @@ export const updateNote = async (updatedNote) => {
 export const deleteNote = async (id) => {
     await axiosAPI.delete("/notes/" + id, {
         headers: {
-          'X-CSRFToken': Cookies.get('csrftoken')
+            'X-CSRFToken': Cookies.get('csrftoken')
         }
-      })
+    })
 }

@@ -29,7 +29,7 @@
 </template>
   
 <script>
-import { useQuasar, Notify, Cookies } from 'quasar'
+import { Notify } from 'quasar'
 import { useRouter } from 'vue-router';
 
 import { useAuthStore } from '../../stores/authStore';

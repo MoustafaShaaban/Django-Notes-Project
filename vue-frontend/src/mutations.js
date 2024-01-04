@@ -44,6 +44,6 @@ export const deleteNoteMutation = gql`
     mutation deleteNote($id: Int!) {
         deleteNote(id: $id) {
             success
+        }
     }
-}
 `

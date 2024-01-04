@@ -69,18 +69,12 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
 import { Notify, Dialog } from 'quasar';
-import gql from 'graphql-tag'
 import { addNoteMutation, deleteNoteMutation } from '../../mutations';
 import { getAllNotes } from '../../queries';
 
 export default {
   name: "GraphQLNoteList",
-  setup() {
-    const router = useRouter()
-    return { router }
-  },
   mounted() {
     this.getNotes();
   },

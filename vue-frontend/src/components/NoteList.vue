@@ -67,9 +67,8 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { useRoute, useRouter } from 'vue-router';
-import { onMounted, ref, onActivated } from 'vue';
-import { useCookies } from "@vueuse/integrations/useCookies";
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/vue-query';
 
 import { useAuthStore } from '../stores/authStore';

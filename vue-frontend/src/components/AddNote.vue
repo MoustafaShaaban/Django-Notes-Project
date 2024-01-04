@@ -31,11 +31,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router';
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { useAuthStore } from "../stores/authStore"
 import { addNote } from '../api/axios';
 
 const title = ref('')
@@ -43,8 +42,6 @@ const content = ref('')
 const queryClient = useQueryClient();
 
 const router = useRouter()
-const authStore = useAuthStore();
-
 const $q = useQuasar()
 
 const { isPending, isError, error, isSuccess, mutate, reset } = useMutation({

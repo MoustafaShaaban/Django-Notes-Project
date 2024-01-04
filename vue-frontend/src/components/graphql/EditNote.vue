@@ -29,9 +29,7 @@
 
 
 <script>
-import { Notify, Cookies } from 'quasar'
-import { useRoute } from 'vue-router';
-import { axiosAPI } from '../../api/axios';
+import { Notify } from 'quasar'
 import { noteById } from '../../queries';
 import { updateNoteMutation } from '../../mutations'
 

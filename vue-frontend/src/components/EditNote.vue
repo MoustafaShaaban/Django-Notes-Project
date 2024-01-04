@@ -28,10 +28,7 @@
 </template>
 
 <script>
-import { useQuasar, Notify, Cookies } from 'quasar'
-import { useRouter } from 'vue-router';
-
-import { useAuthStore } from "../stores/authStore";
+import { Notify, Cookies } from 'quasar'
 import { axiosAPI } from '../api/axios';
 import router from '../router';
 
