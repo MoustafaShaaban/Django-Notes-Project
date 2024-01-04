@@ -25,12 +25,12 @@ export default {
         <q-card-actions v-if="store.$state.isAuthenticated">
           <q-btn flat>
             <RouterLink to="/notes" type="button">
-              <q-btn color="deep-orange" glossy label="Go to REST API Notes List" />
+              <q-btn color="black" glossy label="Go to REST API Notes List" />
             </RouterLink>
           </q-btn>
           <q-btn flat>
             <RouterLink to="/notes/graphql" type="button">
-              <q-btn color="deep-orange" glossy label="Go to GraphQL Notes List" />
+              <q-btn color="black" glossy label="Go to GraphQL Notes List" />
             </RouterLink>
           </q-btn>
         </q-card-actions>
@@ -38,7 +38,7 @@ export default {
         <q-card-actions v-else-if="!store.$state.isAuthenticated" vertical>
           <q-btn flat>
             <RouterLink to="/login" type="button" flat>
-              <q-btn color="deep-orange" glossy label="Login" />
+              <q-btn  color="black" glossy label="Login" />
             </RouterLink>
           </q-btn>
         </q-card-actions>

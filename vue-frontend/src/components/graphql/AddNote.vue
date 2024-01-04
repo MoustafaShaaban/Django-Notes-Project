@@ -14,7 +14,7 @@
             </q-card-section>
 
             <q-card-section>
-                <q-form @submit.prevent="handleSubmit" @reset="onReset">
+                <q-form @submit.prevent="addNote" @reset="onReset">
                     <q-input filled v-model="title" label="Note Title" required lazy-rules
                         :rules="[val => val && val.length > 0 || 'Note Title is required']" />
 
@@ -45,34 +45,28 @@ export default {
         }
     },
     methods: {
-        handleSubmit() {
+        refreshPage() {
+            window.location.reload();
+        },
+        addNote() {
+            
             this.$apollo.mutate({
                 mutation: addNoteMutation,
                 variables: {
                     "title": this.title,
                     "content": this.content
                 },
-                update: (store, { data: { handleSubmit } }) => {
-                    // Add to all notes list
-                    let data = store.readQuery({ query: getAllNotes })
-                    data = {
-                        ...data,
-                        notes: [
-                            ...data.notes,
-                            handleSubmit
-                        ],
-                    }
-                    store.writeQuery({ query: getAllNotes, data })
-                }
             })
             this.$router.push("/notes/graphql")
             Notify.create({
                 message: 'Note Added Successfully',
-                color: "positive",
+                type: 'positive',
                 actions: [
-                    { icon: 'close', color: 'white', round: true, }
+                    { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                    { icon: 'close', color: 'white', round: true, },
                 ]
             })
+            
         },
         onReset() {
             this.title = null

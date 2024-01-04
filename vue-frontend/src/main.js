@@ -4,7 +4,6 @@ import { VueQueryPlugin } from '@tanstack/vue-query'
 import { Quasar, Notify, Dialog, Cookies } from 'quasar'
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
 import { createApolloProvider } from '@vue/apollo-option'
-import axios from "axios";
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
 import 'quasar/src/css/index.sass'

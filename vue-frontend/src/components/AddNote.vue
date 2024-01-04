@@ -51,7 +51,7 @@ const { isPending, isError, error, isSuccess, mutate, reset } = useMutation({
     await router.push('/notes')
     $q.notify({
       message: 'Note Added Successfully',
-      color: "positive",
+      type: "positive",
       actions: [
         { icon: 'close', color: 'white', round: true, }
       ]

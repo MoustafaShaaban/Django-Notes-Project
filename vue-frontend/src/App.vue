@@ -29,7 +29,7 @@ export default {
         this.$router.push('/login')
         Notify.create({
           message: 'Logged out Successfully',
-          color: "positive",
+          type: "positive",
           actions: [
             { icon: 'close', color: 'white', round: true, }
           ]
@@ -66,8 +66,12 @@ export default {
           Notes App
         </q-toolbar-title>
         <q-tabs v-model="tab" v-if="!authStore.$state.isAuthenticated">
-          <router-link to="/login" name="Login" label="Login">Login</router-link>
-          <q-tab name="Register" label="Register" />
+          <router-link to="/login" name="Login" label="Login">
+            <q-btn color="primary" label="Login" />
+          </router-link>
+          <router-link to="/register" name="Register" label="Register">
+            <q-btn size="md" color="primary" label="Register" />
+          </router-link>
         </q-tabs>
 
         <q-tabs v-model="tab" v-if="authStore.$state.isAuthenticated">

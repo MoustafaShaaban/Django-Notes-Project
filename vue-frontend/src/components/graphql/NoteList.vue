@@ -114,9 +114,10 @@ export default {
       await this.$router.push("/notes/graphql")
       Notify.create({
         message: 'Note Added Successfully',
-        color: "positive",
+        type: 'positive',
         actions: [
-          { icon: 'close', color: 'white', round: true, }
+          { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+          { label: 'Dismiss', color: 'white'}
         ]
       })
 
@@ -136,9 +137,10 @@ export default {
         this.$router.push('/notes/graphql')
         Notify.create({
           message: 'Note Deleted Successfully',
-          color: "positive",
+          type: 'positive',
           actions: [
-            { icon: 'close', color: 'white', round: true, }
+            { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+            { label: 'Dismiss', color: 'white'}
           ]
         })
       }).onCancel(() => {
@@ -155,18 +157,6 @@ export default {
           // https://stackoverflow.com/questions/73172384/variable-id-got-invalid-value-1-int-cannot-represent-non-integer-value-1
           id: parseInt(id),
         },
-        update: (store, { data: { handleSubmit } }) => {
-          // Add to all notes list
-          let data = store.readQuery({ query: getAllNotes })
-          data = {
-            ...data,
-            notes: [
-              ...data.notes,
-              handleSubmit
-            ],
-          }
-          store.writeQuery({ query: getAllNotes, data })
-        }
       })
     }
   }

@@ -48,6 +48,9 @@ export default {
     this.getNote()
   },
   methods: {
+    refreshPage() {
+      window.location.reload();
+    },
     handleSubmit() {
       this.$apollo.mutate({
         mutation: updateNoteMutation,
@@ -60,9 +63,10 @@ export default {
       this.$router.push("/notes/graphql")
       Notify.create({
         message: 'Note Updated Successfully',
-        color: "positive",
+        type: "positive",
         actions: [
-          { icon: 'close', color: 'white', round: true, }
+          { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+          { label: 'Dismiss', color: 'white'}
         ]
       })
     },
@@ -77,18 +81,6 @@ export default {
         variables: {
           id: parseInt(this.$route.params.id)
         },
-        update: (store, { data: { handleSubmit } }) => {
-          // Add to all notes list
-          let data = store.readQuery({ query: getAllNotes })
-          data = {
-            ...data,
-            notes: [
-              ...data.notes,
-              handleSubmit
-            ],
-          }
-          store.writeQuery({ query: getAllNotes, data })
-        }
       })
 
       // Make a copy of the returned data because the data saved in the cache is read-only

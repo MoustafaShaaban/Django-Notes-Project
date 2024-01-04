@@ -60,7 +60,7 @@ export default {
             this.$router.push('/notes');
             Notify.create({
               message: 'Note Updated Successfully',
-              color: "positive",
+              type: "positive",
               actions: [
                 { icon: 'close', color: 'white', round: true, }
               ]

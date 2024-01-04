@@ -54,7 +54,7 @@ export default {
         this.router.push('/')
         Notify.create({
           message: 'Logged in Successfully',
-          color: "positive",
+          type: "positive",
           actions: [
             { icon: 'close', color: 'white', round: true, }
           ]
