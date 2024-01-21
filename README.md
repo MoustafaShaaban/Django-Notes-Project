@@ -61,7 +61,7 @@ A notes project built using
 
 * Open the web browser and go to ` http://localhost:8000/ ` to see the results.
 
-* Change directory to vue-frontend directory and install the requirements:
+* Start a new terminal and change directory to vue-frontend directory and install the requirements:
 
 ```bash
 
